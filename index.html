@@ -11,27 +11,34 @@
 </head>
 <body>
 	<div id="app"></div>
-
-
-
-
-    
-
     <div class="container">
     
-      
-
       
     </div> <!-- /container -->
 
 	<script type="text/babel">
     var Navbar = React.createClass({
+      // propTypes va scritto con la lettera minuscola!
+      propTypes: {
+        brand:React.PropTypes.string.isRequired
+      },
+      getDefaultProps: function(){
+        return {
+          brand: 'My Website Name',
+          color: 'light'
+        }
+      },
       // la sola funzione rechiesta per un componente React
       render: function(){
+        if(this.props.color === 'dark'){
+          var navClass = 'navbar navbar-inverse';
+        } else {
+          var navClass = 'navbar navbar-default';
+        }
         return(
         // Devo avere un singolo elemento HTML come radice, che fa da wrapper
           <div>
-              <nav className="navbar navbar-default">
+              <nav className={navClass}>
                 <div className="container-fluid">
                   <div className="navbar-header">
                     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -56,13 +63,25 @@
     });
 
     var Jumbotron = React.createClass({
+      propTypes: {
+        heading: React.PropTypes.string,
+        text: React.PropTypes.string,
+        link: React.PropTypes.string
+      },
+      getDefaultProps: function(){
+        return {
+          heading: 'Welcome!',
+          text: 'Welcome to our shiny new website built with React components',
+          link: 'http://google.com'
+        }
+      },
       render: function(){
         return(
           <div className="jumbotron">
             <div className="container">
-              <h1>Hello, world!</h1>
-              <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-              <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+              <h1>{this.props.heading}</h1>
+              <p>{this.props.text}</p>
+              <p><a className="btn btn-primary btn-lg" href={this.props.link} role="button">Learn more &raquo;</a></p>
             </div>
           </div>
         )
@@ -82,13 +101,19 @@
     });
 
     var Footer = React.createClass({
+      getDefaultProps: function(){
+        return{
+          website: 'MyWebsite',
+          copy_year: 2016
+        }
+      },
       render: function(){
         return(
           <div className="container">
             <hr />
 
             <footer>
-              <p>&copy; 2015 MyWebsite, Inc.</p>
+              <p>&copy; {this.props.copy_year} {this.props.website}, Inc.</p>
             </footer>
           </div>
         )
@@ -99,7 +124,7 @@
       render: function(){
         return(
           <div>
-            <Navbar brand="Sample Website"/>
+            <Navbar color='dark'/>
             <Jumbotron />
             <HomePage />
             <Footer />
