@@ -11,12 +11,11 @@
 </head>
 <body>
 	<div id="app"></div>
-    <div class="container">
     
-      
-    </div> <!-- /container -->
 
+  <!-- Siccome devo usare ES6 allora devo mettere il type a text/babel -->
 	<script type="text/babel">
+
     var Navbar = React.createClass({
       // propTypes va scritto con la lettera minuscola!
       propTypes: {
@@ -35,6 +34,13 @@
         } else {
           var navClass = 'navbar navbar-default';
         }
+        var homeActive = '';
+        var aboutActive = '';
+        if(this.props.page==='home'){
+          homeActive = 'active';
+        } else if(this.props.page ==='about') {
+          aboutActive = 'active';
+        }
         return(
         // Devo avere un singolo elemento HTML come radice, che fa da wrapper
           <div>
@@ -51,8 +57,8 @@
                   </div>
                   <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul className="nav navbar-nav">
-                      <li className="active"><a href="#">Home <span className="sr-only">(current)</span></a></li>
-                      <li><a href="#">About</a></li>
+                      <li className={homeActive}><a onClick={this.props.homeClick} href="#">Home </a></li>
+                      <li className={aboutActive} ><a onClick={this.props.aboutClick} href="#">About</a></li>
                     </ul>
                   </div>
                 </div>
@@ -88,17 +94,32 @@
       }
     });
 
-     var HomePage = React.createClass({
+    var HomePage = React.createClass({
       render: function(){
         return(
           <div className="container">
             <div className="row">
-              Main Content
+              <h2 className="page-header">HOME</h2>
+              <p>Same content...</p>
             </div>
           </div>
         )
       }
     });
+
+    var PageAbout = React.createClass({
+      render: function(){
+        return(
+          <div className="container">
+            <div className="row">
+              <h2 className="page-header">About Us</h2>
+              <p>Same content...</p>
+            </div>
+          </div>
+        )
+      }
+    });
+
 
     var Footer = React.createClass({
       getDefaultProps: function(){
@@ -121,12 +142,40 @@
     })
 
     var App = React.createClass({
+      // getInitialState è invocata la prima volta che creo il componente React
+      getInitialState: function(){
+        return{
+          page: 'home'
+        }
+      },
+      handleHomeClick : function(){
+        this.setState({
+          page:'home'
+        });
+      },
+      handleAboutClick : function(){
+        this.setState({
+          page:'about'
+        });
+      },
       render: function(){
+        if(this.state.page==='home'){
+          var jumbotron = <Jumbotron />;
+          var page = <HomePage />;
+        } else if(this.state.page==='about') {
+          var jumbtron = '';
+          var page = <PageAbout />;
+        }
         return(
           <div>
-            <Navbar color='dark'/>
-            <Jumbotron />
-            <HomePage />
+            <Navbar 
+              color='dark'
+              page = {this.state.page}
+              homeClick={this.handleHomeClick}
+              aboutClick={this.handleAboutClick}/>
+            {jumbotron}
+            {page}
+
             <Footer />
           </div>
         )
