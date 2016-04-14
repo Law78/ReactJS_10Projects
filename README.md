@@ -6,7 +6,10 @@ Codice del corso Udemy.
 
 Primi componenti in React.
 
-Carico nello HEAD i file js di React e React-dom ed inoltre il js di babel-core/browser.min.js
+React ragiona per componenti. Tutto in React è un componente. Questi componenti li creo tramite la createClass che vuole un oggetto a cui aggiungo, solitamente, le funzioni di render (obbligatoria sempre!) e le funzioni per impostare le proprietà di base del componente e i loro valori e tipi di default (getDefaultProps, propTypes).
+[LIVE PROJECT](https://jsfiddle.net/wz9vfku5/)
+
+Carico nello HEAD del file HTML i file js di React e React-dom ed inoltre il js di babel-core/browser.min.js
 https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js
 La versione 6 ha problemi...
 
@@ -51,6 +54,7 @@ Devo avere un TAG ROOT che contiene gli altri TAG HTML all'intero, cioè li wrap
 Adesso vogliamo avere delle proprietà associate al nostro elemento:
 <HelloWorld name="Lorenzo" />
 Passiamo il valore di nome al mio componente, che lo posso accedere tramite l'espressione: {this.props.name}:
+(Ciò che scrivo tra le parentesi graffe è javascript!)
 
 ```
 var HelloWorld = React.createClass({
@@ -119,8 +123,8 @@ Posso usare dei conditionals:
 var HelloWorld = React.createClass({
 
   propTypes: {
-    name: React.PropTypes.string.isRequired,
-    isPerson: React.PropTypes.boolean
+    name: React.PropTypes.string,
+    isPerson: React.PropTypes.bool
   },
   
   getDefaultProps: function(){
@@ -154,13 +158,43 @@ var Person = React.createClass({
   
   render: function(){
     return(
-      <span>Person</span>
+      <span>{this.props.name}</span>
     );
   }
 });
 
 ReactDOM.render(
-  <HelloWorld name={Giordano} isPerson={true}/>,
+  <HelloWorld name="Giuseppe" isPerson={true}/>,
   document.getElementById('area')
 );
+```
+Un altro importante metodo da vedere all'interno dell'oggetto createClasse({}) è il getInitialState, ovvero una funzione che ritorna un oggetto con i valori che vogliamo impostare inizialmente e la componentDidMount, ovvero per cambiare lo stato quando il componente è pronto per il rendering:
+```
+...
+getDefaultProps: function(){
+  return{
+    name: "Lorenzo"
+  }
+},
+  
+getInitialState: function(){
+  return{
+    value: 1
+  }
+}
+
+render: function(){
+  var greeting = "World";
+    
+  if(this.props.isPerson){
+    greeting = (<Person name={this.props.name}/>)
+  }
+  return(
+    <div>
+      <h1>Hello {greeting}</h1>
+      {this.state.value}
+    <div>
+  );
+}
+  ...
 ```
