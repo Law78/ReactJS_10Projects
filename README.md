@@ -133,10 +133,10 @@ var HelloWorld = React.createClass({
     var greeting = "World";
     
     if(this.props.isPerson){
-      greeting = 
+      greeting = (<Person name={this.props.name}/>)
     }
     return(
-      <h1>Hello</h1>
+      <h1>Hello {greeting}</h1>
     );
   }
 });
